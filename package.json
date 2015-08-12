@@ -1,0 +1,21 @@
+{
+  "name": "betterhelp",
+  "version": "1.0.0",
+  "description": "Betterhelp survey test",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "survey",
+    "data"
+  ],
+  "author": "Jon Ringvald",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.13.3",
+    "express": "^4.13.3",
+    "mongodb": "^2.0.40",
+    "mongoose": "^4.1.2"
+  }
+}
