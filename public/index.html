@@ -8,14 +8,27 @@
   <script src="./surveyController.js"></script>
   </head>
   <body ng-controller='SurveyController'>
+
     <div ng-repeat='question in questions'>
-      <span>{{question.id}}</span>
+      <span>{{question.id}}.</span>
       <span>{{question.question}}</span>
-      <div ng-repeat='answer in question.answers'>
-        <div ng-repeat='(key, value) in answer'>
-          <input type='checkbox' ng-model='surveyToPost.key'> {{key}}
+
+      <div ng-hide="{{question.radio}}">
+        <div ng-repeat='answer in question.answers'>
+          <div ng-repeat='(key, value) in answer'>
+            <input type='checkbox' ng-model='value'> {{key}}
+          </div>
         </div>
       </div>
+
+      <div ng-show="{{question.radio}}">
+        <div ng-repeat='answer in question.answers'>
+          <div ng-repeat='(key, value) in answer'>
+            <input type='radio' name='{{question.id}}' ng-model='value'> {{key}}
+          </div>
+        </div>
+      </div>
+
       <br>
     </div>
 

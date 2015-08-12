@@ -7,12 +7,25 @@ angular.module('survey',[])
     $scope.questions = data;
   })
 
-  var surveyToPost = {
+  var survey = $scope.questions;
 
-  };
+  $scope.createSurvey = function(survey) {
+    $http.post('http://localhost:3001/surveys', survey)
+    .success(function(data, status, headers,config) {
+      //$scope.questions = data;
+      console.log("maybe something happened")
+    })
+  }
 
-  /*$scope.createSurvey = $http.post('http://localhost:3001/surveys', surveyToPost)
+  //results page
+  $scope.surveys = {};
+  $scope.men = 0;
+
+  $http.get('http://localhost:3001/surveys')
   .success(function(data, status, headers,config) {
-    $scope.questions = data;
-  })*/
+    $scope.surveys = data;
+    console.log(data.filter(function(x) {
+      x.answers.Male === true;
+    }).length);
+  })
 })

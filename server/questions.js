@@ -55,7 +55,8 @@ exports.addQuestion = function(request, response) {
   var question = {
     id: request.body.id,
     question: request.body.question.title,
-    answers: request.body.question.answers
+    answers: request.body.question.answers,
+    radio: request.body.question.radio
   }
 
   db.collection('questions', function(err, collection) {
