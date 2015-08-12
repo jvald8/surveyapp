@@ -7,8 +7,19 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
   <script src="./surveyController.js"></script>
   </head>
-
   <body ng-controller='SurveyController'>
-    {{questions}}
+    <div ng-repeat='question in questions'>
+      <span>{{question.id}}</span>
+      <span>{{question.question}}</span>
+      <div ng-repeat='answer in question.answers'>
+        <div ng-repeat='(key, value) in answer'>
+          <input type='checkbox' ng-model='surveyToPost.key'> {{key}}
+        </div>
+      </div>
+      <br>
+    </div>
+
+    <button ng-click='createSurvey()'>Submit Survey
+    </button>
   </body>
 </html>

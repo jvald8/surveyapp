@@ -11,6 +11,9 @@ app.post('/questions', questions.addQuestion);
 app.put('/questions/:id', questions.updateQuestion);
 app.delete('/questions/:id', questions.deleteQuestion);
 
+app.get('/surveys', questions.getAllSurveys);
+app.post('/surveys', questions.addSurvey);
+
 app.listen(process.env.PORT || 3001, function() {
   console.log('server started on 3001')
 })

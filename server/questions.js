@@ -4,17 +4,27 @@ var Db = mongo.Db;
 var server = new Server('localhost', 27017, {auto_reconnect:true});
 var db = new Db('questionsdb', server);
 
-//configure sorting
-var sortBy = 'id';
-var direction = 1;
+//configure question sorting
+var questionsSortBy = 'id';
+var questionSortDirection = -1;
+
+//configure answer sorting
+var answersSortBy = 'id';
+var answerSortDirection = -1;
 
 db.open(function(err, db) {
   if(!err) {
     console.log('connection to the database is a go');
     db.collection('questions', {strict:true}, function(err, collection) {
       if(err) {
-        console.log('Couldn\'t find the db, let\'s create it and populate it with a question');
+        console.log('Couldn\'t find the collection, let\'s create it and populate it with a question');
         populateDb();
+      }
+    });
+    db.collection('surveys', {strict:true}, function(err, collection) {
+      if(err) {
+        console.log('Couldn\'t find the collection, let\'s create it and populate it with a question');
+        populateSurveyDb();
       }
     });
   }
@@ -22,7 +32,18 @@ db.open(function(err, db) {
 
 exports.getAllQuestions = function(request, response) {
   db.collection('questions', function(err, collection) {
-    collection.find().sort({sortBy: direction}).toArray(function(err, docs) {
+    collection.find().sort({questionsSortBy: questionSortDirection}).toArray(function(err, docs) {
+      console.log(docs)
+      response.setHeader('Access-Control-Allow-Origin', '*');
+      response.send(docs);
+    });
+  });
+};
+
+exports.getAllSurveys = function(request, response) {
+  db.collection('surveys', function(err, collection) {
+    collection.find().toArray(function(err, docs) {
+      console.log(docs)
       response.setHeader('Access-Control-Allow-Origin', '*');
       response.send(docs);
     });
@@ -42,6 +63,27 @@ exports.addQuestion = function(request, response) {
       console.log(err)
     } else {
       collection.insert(question, {safe:true}, function(err, result) {
+        if(err) {
+          console.log('theres been an error adding the question: ' + err);
+          response.send({'error':'theres been an error'});
+        } else {
+          response.setHeader('Access-Control-Allow-Origin', '*');
+          response.send(result);
+        }
+      });
+    }
+  });
+};
+
+exports.addSurvey = function(request, response) {
+
+  var survey = request.body;
+
+  db.collection('surveys', function(err, collection) {
+    if(err) {
+      console.log(err)
+    } else {
+      collection.insert(survey, {safe:true}, function(err, result) {
         if(err) {
           console.log('theres been an error adding the question: ' + err);
           response.send({'error':'theres been an error'});
@@ -118,3 +160,23 @@ var populateDb = function() {
     });
 
 };
+
+var populateSurveyDb = function() {
+  var surveys = [
+    {
+        id:1,
+        answers: [{'mock answer 1': true}, {'mock answer 2': false}]
+    }];
+
+    db.collection('surveys', function(err, collection) {
+        collection.insert(surveys, {safe:true}, function(err, result) {
+          if(err) {
+            console.log(err)
+          } else {
+            console.log('successfully added mock survey data')
+          }
+        });
+    });
+
+};
+

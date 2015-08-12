@@ -6,4 +6,13 @@ angular.module('survey',[])
   .success(function(data, status, headers,config) {
     $scope.questions = data;
   })
+
+  var surveyToPost = {
+
+  };
+
+  /*$scope.createSurvey = $http.post('http://localhost:3001/surveys', surveyToPost)
+  .success(function(data, status, headers,config) {
+    $scope.questions = data;
+  })*/
 })
